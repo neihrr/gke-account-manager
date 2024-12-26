@@ -7,9 +7,11 @@ import java.util.List;
 public class TransactionController {
 
     private final TransactionRepository repository;
+    private final TransactionService transactionService;
 
-    TransactionController(TransactionRepository repository) {
+    TransactionController(TransactionRepository repository,TransactionService transactionService) {
         this.repository = repository;
+        this.transactionService = transactionService;
     }
 
     @GetMapping("/")
@@ -18,10 +20,21 @@ public class TransactionController {
     }
 
     @PostMapping("/transactions")
-    public Transaction newTransaction(@RequestBody Transaction transaction) {
+    public Transaction createTransaction(@RequestBody Transaction transaction) {
         // Implement transaction creation logic
         // Return the created transaction
         return repository.save(transaction); // Assuming you have a repository to save transaction;
+    }
+
+    @PostMapping("transactions/process/{accountId}")
+    public Transaction processTransaction(
+            @PathVariable Integer accountId,
+            @RequestBody TransactionRequest request) {
+        return transactionService.processTransaction(
+                accountId,
+                request.getType(),
+                request.getAmount()
+        );
     }
 
     @GetMapping("/transactions")
@@ -37,9 +50,8 @@ public class TransactionController {
         return repository.findById(id).orElse(null); // Assuming you have a repository to retrieve transaction;
     }   
 
-    @DeleteMapping
+    @DeleteMapping("/transactions/{id}")
     void deleteTransaction(@PathVariable Integer id) {
-        // Implement transaction deletion logic
         repository.deleteById(id); // Assuming you have a repository to delete transaction;
     }
 }

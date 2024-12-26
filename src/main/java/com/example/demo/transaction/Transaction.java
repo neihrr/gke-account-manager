@@ -13,7 +13,7 @@ public class Transaction {
     Integer transactionId;
     private Integer accountId; // ID of the associated account
     private TransactionType type; // Enum: DEPOSIT or WITHDRAWAL
-    private Float amount; // Monetary value of the transaction
+    private double amount; // Monetary value of the transaction
     private LocalDateTime timestamp; // Timestamp of the transaction
     private TransactionStatus status; // Enum: PENDING, COMPLETED, FAILED
 
@@ -24,7 +24,7 @@ public class Transaction {
         // This constructor is intentionally left empty.
     }
 
-    public Transaction(Integer accountId, TransactionType type, Float amount, String description) {
+    public Transaction(Integer accountId, TransactionType type, double amount) {
         this.accountId = accountId;
         this.type = type;
         this.amount = amount;
@@ -57,7 +57,7 @@ public class Transaction {
         this.type = type;
     }
 
-    public Float getAmount() {
+    public double getAmount() {
         return amount;
     }
 

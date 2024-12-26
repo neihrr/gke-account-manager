@@ -14,7 +14,7 @@ import java.util.Optional;
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
-    private final AccountRepository accountRepository;
+    private final AccountRepository accountRepository ;
 
     @Autowired
     public TransactionService(TransactionRepository transactionRepository, AccountRepository accountRepository) {
@@ -28,10 +28,9 @@ public class TransactionService {
      * @param accountId the ID of the account
      * @param type the type of transaction (DEPOSIT or WITHDRAWAL)
      * @param amount the amount to be transacted
-     * @param description a description for the transaction
      * @return the created Transaction object
      */
-    public Transaction processTransaction(Integer accountId, TransactionType type, Float amount, String description) {
+    public Transaction processTransaction(Integer accountId, TransactionType type, double amount) {
         // Validate account existence
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
         if (optionalAccount.isEmpty()) {
@@ -41,21 +40,23 @@ public class TransactionService {
         Account account = optionalAccount.get();
 
         // Handle business logic
-        if (type == TransactionType.WITHDRAWAL && account.getBalance().compareTo(amount) < 0) {
+        if (type == TransactionType.WITHDRAWAL && account.getBalance() < amount) {
             throw new IllegalArgumentException("Insufficient funds for withdrawal.");
         }
 
-        //Float newBalance = type == TransactionType.DEPOSIT
-          //      ? account.getBalance().add(amount)
-            //    : account.getBalance().subtract(amount);
-
+        if(type == TransactionType.DEPOSIT){
+            account.setBalance(account.getBalance()+amount);
+        }
+        else{
+            account.setBalance(account.getBalance()-amount);
+        }
         // Update account balance
-        //ccount.setBalance(newBalance);
         accountRepository.save(account);
 
         // Create and save transaction
-        Transaction transaction = new Transaction(accountId, type, amount, description);
+        Transaction transaction = new Transaction(accountId, type, amount);
         transaction.setTimestamp(LocalDateTime.now());
+        System.out.println("Transaction: "+transaction.toString()+" type: "+type+" amount: "+amount);
         transaction.setStatus(TransactionStatus.COMPLETED);
 
         transactionRepository.save(transaction);
