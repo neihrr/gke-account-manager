@@ -41,14 +41,14 @@ public class TransactionService {
 
         // Handle business logic
         if (type == TransactionType.WITHDRAWAL && account.getBalance() < amount) {
-            throw new IllegalArgumentException("Insufficient funds for withdrawal.");
+            throw new IllegalArgumentException("Inal.");
         }
 
         if(type == TransactionType.DEPOSIT){
-            account.setBalance(account.getBalance()+amount);
+            account.setBalance(account.getBalance() + amount);
         }
         else{
-            account.setBalance(account.getBalance()-amount);
+            account.setBalance(account.getBalance() - amount);
         }
         // Update account balance
         accountRepository.save(account);

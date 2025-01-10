@@ -19,7 +19,10 @@ class LoadDatabase {
     CommandLineRunner initDatabase(TransactionRepository transactionRepository, AccountRepository accountRepository) {
 
         return args -> {
-            log.info("Preloading " + accountRepository.save(new Account("wihuuu", 50)));
+            log.info("Preloading " + accountRepository.save(new Account("Nehir's Account", 50)));
+            log.info("Preloading " + accountRepository.save(new Account("Leyre's Account", 40)));
+            log.info("Preloading " + accountRepository.save(new Account("Joe's Account", 30)));
+            log.info("Preloading " + accountRepository.save(new Account("Simon's Accounts", 20)));
             log.info("Preloading " + transactionRepository.save(new Transaction(1,TransactionType.DEPOSIT, 40)));
             log.info("Preloading " + transactionRepository.save(new Transaction(2,TransactionType.DEPOSIT, 60)));
         };

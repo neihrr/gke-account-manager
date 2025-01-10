@@ -16,8 +16,6 @@ public class AccountController {
     @PostMapping("/accounts")
     public Account createAccount(@RequestBody Account account){return accountRepository.save(account);}
 
-
-
     @GetMapping("/accounts/{id}")
     public Account getAccount(@PathVariable Integer id) {
         // Implement transaction retrieval logic

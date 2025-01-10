@@ -48,7 +48,12 @@ public class TransactionController {
         // Implement transaction retrieval logic
         // Return the transaction
         return repository.findById(id).orElse(null); // Assuming you have a repository to retrieve transaction;
-    }   
+    }
+
+    @GetMapping("/transactions/account/{accountId}")
+    public List<Transaction> getTransactionsByAccountId(@PathVariable Integer accountId) {
+        return repository.findByAccountId(accountId);
+    }
 
     @DeleteMapping("/transactions/{id}")
     void deleteTransaction(@PathVariable Integer id) {
